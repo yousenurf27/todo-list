@@ -1,13 +1,11 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import PropTypes from 'prop-types'
-import useActivitys from "../features/activitys/useActivitys"
 
-const FormModals = ({ show, setShow }) => {
-  const { formValues, onChange, createActivity } = useActivitys()
+const FormModals = ({ open, toggleModalAtivity, formValuesTilte, onChange, createActivity }) => {
   return (
-    <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setShow}>
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={toggleModalAtivity}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -45,7 +43,7 @@ const FormModals = ({ show, setShow }) => {
                           <span className="block text-sm font-medium text-slate-700">Title Activity</span>
                           <input
                             name="title"
-                            value={formValues["title"]}
+                            value={formValuesTilte}
                             onChange={onChange}
                             required
                             type="text"  className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
@@ -64,7 +62,7 @@ const FormModals = ({ show, setShow }) => {
                           <button
                             type="button"
                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                            onClick={() => setShow(false)}
+                            onClick={() => toggleModalAtivity()}
                           >
                             Cancel
                           </button>
@@ -83,8 +81,11 @@ const FormModals = ({ show, setShow }) => {
 }
 
 FormModals.propTypes = {
-  show: PropTypes.bool,
-  setShow: PropTypes.func
+  open: PropTypes.bool,
+  toggleModalAtivity: PropTypes.func,
+  formValuesTilte: PropTypes.string,
+  onChange: PropTypes.func,
+  createActivity: PropTypes.func
 }
 
 export default FormModals

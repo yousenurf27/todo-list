@@ -23,6 +23,10 @@ const useActivitys = () => {
     }
   }
 
+  const toggleModalAtivity = () => {
+    setOpen(!open)
+  }
+
   const handleShow = (id, title) => {
     setOpenConfirm(true)
     setIdCard({id: id, title: title})
@@ -45,11 +49,16 @@ const useActivitys = () => {
     setFormValues({...formValues, [name]: value });
   };
 
-  const createActivity = async () => {
+  const createActivity = async (e) => {
+    e.preventDefault()
     try {
-      if (formValues["title"] === '') throw SyntaxError("Title Activity harus diisi")
+      if (formValues["title"] === '') return SyntaxError("Title Activity harus diisi")
       
       await axiosInstance.post("/activity-groups", formValues)
+      await toggleModalAtivity()
+      setTimeout(() => {
+        window.location.reload()
+      }, 300);
     } catch (error) {
       console.log(error.message)
     }
@@ -70,7 +79,7 @@ const useActivitys = () => {
   return {
     activitys,
     open,
-    setOpen,
+    toggleModalAtivity,
     fetchActivitys,
     formValues,
     onChange,

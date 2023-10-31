@@ -1,15 +1,13 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import PropTypes from 'prop-types'
-import useTodo from "../features/todo/useTodo"
 import { useParams } from "react-router-dom"
 
-const TodoFormModals = ({ show, setShow }) => {
-  const { formValues, onChange, createTodo, idRef } = useTodo()
+const TodoFormModals = ({ show, toggleModalTodo, formValuePriority, formValueTitle, onChange, createTodo, idRef }) => {
   const { id } = useParams()
 
   let button
-  if (formValues["priority"] === "") {
+  if (formValuePriority === "") {
     button = <button
               disabled
               type="submit"
@@ -28,7 +26,7 @@ const TodoFormModals = ({ show, setShow }) => {
 
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setShow}>
+      <Dialog as="div" className="relative z-10" onClose={toggleModalTodo}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -66,7 +64,7 @@ const TodoFormModals = ({ show, setShow }) => {
                           <span className="block text-sm font-medium text-slate-700">NAMA LIST ITEM</span>
                           <input
                             name="title"
-                            value={formValues["title"]}
+                            value={formValueTitle}
                             data={id}
                             onChange={onChange}
                             required
@@ -95,13 +93,13 @@ const TodoFormModals = ({ show, setShow }) => {
                             <option value="very-low">Very Low</option>
                           </select>
                         </label>
-                        <input hidden value={id} ref={idRef} type="text" />
+                        <input hidden defaultValue={id} ref={idRef} type="text" />
                         <div className="bg-gray-50 py-3 sm:flex sm:flex-row-reverse">
                           {button}
                           <button
                             type="button"
                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                            onClick={() => setShow(false)}
+                            onClick={() => toggleModalTodo()}
                           >
                             Cancel
                           </button>
@@ -121,7 +119,12 @@ const TodoFormModals = ({ show, setShow }) => {
 
 TodoFormModals.propTypes = {
   show: PropTypes.bool,
-  setShow: PropTypes.func
+  toggleModalTodo: PropTypes.func,
+  formValuePriority: PropTypes.string,
+  formValueTitle: PropTypes.string,
+  onChange: PropTypes.func,
+  createTodo: PropTypes.func, 
+  idRef: PropTypes.object
 }
 
 export default TodoFormModals

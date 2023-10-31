@@ -26,14 +26,24 @@ const useTodo = () => {
     }
   }
 
+  const toggleModalTodo = () => {
+    setOpen(!open)
+  }
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setFormValues({...formValues, [name]: value, ["activity_group_id"]: idRef.current.value});
   };
 
-  const createTodo = async () => {
+  const createTodo = async (e) => {
+    e.preventDefault()
     try {
+      console.log(formValues)
       await axiosInstance.post("/todo-items", formValues)
+      await toggleModalTodo()
+      setTimeout(() => {
+        window.location.reload()
+      }, 300);
     } catch (error) {
       console.log(error.message)
     }
@@ -56,7 +66,7 @@ const useTodo = () => {
 
   return {
     open,
-    setOpen,
+    toggleModalTodo,
     formValues,
     setFormValues,
     onChange,
