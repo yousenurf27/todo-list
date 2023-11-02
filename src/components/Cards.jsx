@@ -7,11 +7,11 @@ import Toast from "./Toast"
 import { Link } from "react-router-dom"
 
 const Card = () => {
-  const { activitys, fetchActivitys, handleShow, handleClose, openConfirm, deleteActivity, idCard, openToast, handleToastClose } = useActivitys()
+  const { activitys, fetchActivitys, handleShow, handleClose, openConfirm, deleteActivity, idCard, openToast, handleToastClose, location } = useActivitys()
 
   useEffect(() => {
     fetchActivitys()
-  }, [])
+  }, [location.key])
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
 import { axiosInstance } from "../../lib/axios"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const initialForm = {
   title: "",
@@ -15,6 +16,9 @@ const useTodo = () => {
   const [idTodo, setIdTodo] = useState([])
   const [formValues, setFormValues] = useState(initialForm)
   const idRef = useRef()
+  const navigate = useNavigate()
+  const location = useLocation()
+
 
   const fetchTodo = async (id) => {
     try {
@@ -38,12 +42,10 @@ const useTodo = () => {
   const createTodo = async (e) => {
     e.preventDefault()
     try {
-      console.log(formValues)
       await axiosInstance.post("/todo-items", formValues)
       await toggleModalTodo()
-      setTimeout(() => {
-        window.location.reload()
-      }, 300);
+      await navigate(location.pathname)
+      await setFormValues(initialForm)
     } catch (error) {
       console.log(error.message)
     }
@@ -78,7 +80,8 @@ const useTodo = () => {
     handleShow,
     openConfirm,
     idTodo,
-    idRef
+    idRef,
+    location
   }
 }
 

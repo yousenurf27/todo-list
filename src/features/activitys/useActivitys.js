@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { axiosInstance } from "../../lib/axios"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const initialForm = {
   title: ""
@@ -12,6 +13,8 @@ const useActivitys = () => {
   const [openToast, setOpenToast] = useState(false)
   const [formValues, setFormValues] = useState(initialForm)
   const [idCard, setIdCard] = useState([])
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const fetchActivitys = async () => {
     try {
@@ -56,9 +59,8 @@ const useActivitys = () => {
       
       await axiosInstance.post("/activity-groups", formValues)
       await toggleModalAtivity()
-      setTimeout(() => {
-        window.location.reload()
-      }, 300);
+      await navigate("/activitys")
+      await setFormValues(initialForm)
     } catch (error) {
       console.log(error.message)
     }
@@ -90,7 +92,8 @@ const useActivitys = () => {
     openConfirm,
     idCard,
     handleToastClose,
-    openToast
+    openToast,
+    location
   }
 }
 

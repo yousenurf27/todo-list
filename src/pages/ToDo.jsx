@@ -6,12 +6,12 @@ import { useEffect } from "react"
 import Item from "../components/Item"
 
 const ToDo = () => {
-  const { todo, fetchTodo, deleteTodo, handleClose, handleShow, openConfirm, idTodo } = useTodo()
+  const { todo, fetchTodo, deleteTodo, handleClose, handleShow, openConfirm, idTodo, location } = useTodo()
   const { id } = useParams()
 
   useEffect(() => {
     fetchTodo(id)
-  }, [])
+  }, [location.key])
   
   return (
     <>
